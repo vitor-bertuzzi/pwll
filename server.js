@@ -38,19 +38,16 @@ const server = http.createServer((req, res)=>{
     } else if (req.method === 'GET' && req.url.startsWith('/produtos')) {
         res.writeHead(200, { 'content-type': 'application/json' });
         const minhaurl = new URL(req.url, `http://${req.headers.host}`);
-        const categoriaQueOUsuarioPediu = minhaurl.searchParams.get('categoria'); // Agora você pega a categoria corretamente
+        const filtrarcategoria = minhaurl.searchParams.get('categoria');
 
-        let produtosParaEnviar = produtos; // Começa com todos os produtos
+        let Enviarprodutos = produtos; 
 
-        // Se uma categoria foi pedida, vamos filtrar (isso ainda vamos detalhar depois)
-        if (categoriaQueOUsuarioPediu) {
-            // Por enquanto, vamos retornar todos os produtos mesmo se uma categoria for pedida,
-            // para não quebrar o servidor. A lógica de filtro virá aqui depois.
-            // produtosParaEnviar = produtos.filter(produto => produto.categoria === categoriaQueOUsuarioPediu);
+        if (filtrarcategoria) {
+            Enviarprodutos = produtos.filter(produto => produto.categoria === filtrarcategoria);
+            res.end(JSON.stringify(Enviarprodutos));
         }
 
-        res.end(JSON.stringify(produtosParaEnviar)); // Envia os produtos (todos por enquanto)
-    }
+        res.end(JSON.stringify(Enviarprodutos));
     }
 });
 
