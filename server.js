@@ -1,5 +1,7 @@
+//nome: Vítor Bertuzzi Beltrami Turma: 2ºDS AMS
 const { log } = require('console');
 const http = require('http');
+const { parse } = require('url');
 const alunos = [{id: 1, nome: 'Joao', turma: 1, curso: 'ds'},
     {id: 2, nome: 'Pedro', turma: 1, curso: 'mec'},
     {id: 3, nome: 'Vitor', turma: 3, curso: 'adm'},
@@ -44,10 +46,37 @@ const server = http.createServer((req, res)=>{
 
         if (filtrarcategoria) {
             Enviarprodutos = produtos.filter(produto => produto.categoria === filtrarcategoria);
-            res.end(JSON.stringify(Enviarprodutos));
         }
 
         res.end(JSON.stringify(Enviarprodutos));
+    }else if (req.method === 'POST' && req.url === '/alunos') {
+        let body = '';
+
+        req.on('data', chunk => {
+            body = chunk.toString();   
+        });
+
+        req.on('end', () => {
+            try {
+                const novoAluno = JSON.parse(body);
+                // 2. Validar 'nome' e 'turma'
+                if(!novoAluno.nome || !novoAluno.turma){
+
+                }else{
+                    res.writeHead(400,{'content-type': 'application/json'});
+                    res.end(JSON.stringify(mensagem="400 requisição não encontrada"));
+                    return;
+                }
+                alunos.map();
+                Math.max();
+                const ids = alunos.map(aluno => aluno.id);
+            } catch (error) {
+               res.writeHead(400,{'content-type': 'application/json'});
+              res.end(JSON.stringify(mensagem="400 requisição não encontrada"));
+            }
+             res.writeHead(201,{'content-type': 'application/json'});
+            res.end(JSON.stringify(novoAluno));
+        });
     }
 });
 
